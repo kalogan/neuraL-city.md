@@ -1,32 +1,28 @@
-import { ApiClient } from '../data/apiClient';
+import { useAppState } from "../state/appState";
 
-export function createPromptPanel(onData: () => void): HTMLElement {
-  const panel = document.createElement('div');
-  panel.className = 'absolute top-0 left-0 right-0 p-3 bg-slate-950/70 backdrop-blur-md border-b border-cyan-500/20 flex gap-2 transition-all duration-300';
-  panel.innerHTML = `
-    <input id="prompt-input" class="flex-1 bg-slate-900/70 px-3 py-2 rounded border border-slate-700 focus:outline-none focus:border-cyan-400 transition" value="Explain transformer attention" />
-    <button id="prompt-submit" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 rounded transition">Run</button>
-    <div id="prompt-error" class="text-red-400 text-sm"></div>
-  `;
+export function createPromptPanel(): HTMLElement {
+  const container = document.createElement("div");
+  container.className =
+    "absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 p-3 rounded-lg flex gap-2";
 
-  const input = panel.querySelector<HTMLInputElement>('#prompt-input');
-  const button = panel.querySelector<HTMLButtonElement>('#prompt-submit');
-  const error = panel.querySelector<HTMLDivElement>('#prompt-error');
+  const input = document.createElement("input");
+  input.className = "px-3 py-2 rounded bg-neutral-900 text-white";
+  input.placeholder = "Enter prompt...";
 
-  const client = new ApiClient('/api');
+  const button = document.createElement("button");
+  button.textContent = "Run";
+  button.className =
+    "px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white";
 
+  button.onclick = () => {
+    const prompt = input.value.trim();
+    if (!prompt) return;
 
-  button?.addEventListener('click', async () => {
-    if (!input) return;
-    error!.textContent = '';
-    try {
-      await client.fetchActivation(input.value);
-      onData();
-    } catch (e) {
-      error!.textContent = 'Failed to load activation data';
-      console.error(e);
-    }
-  });
+    useAppState.getState().setPrompt(prompt);
+  };
 
-  return panel;
+  container.appendChild(input);
+  container.appendChild(button);
+
+  return container;
 }
