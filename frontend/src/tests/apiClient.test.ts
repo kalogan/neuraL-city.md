@@ -13,7 +13,7 @@ describe('ApiClient', () => {
       json: async () => ({ layers: [{ layer: 1, neurons: [0.1], attention: [[0.2]], logits: ['a'] }] })
     }));
 
-    const client = new ApiClient('http://localhost:8000');
+    const client = new ApiClient('/api');
     const data = await client.fetchActivation('hello');
 
     expect(data.layers).toHaveLength(1);
