@@ -39,7 +39,5 @@ export class ApiClient {
         return null;
   }
       throw error;
-
-    }
   }
 }
