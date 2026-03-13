@@ -55,7 +55,8 @@ sceneManager.scene.add(hoverMarker);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-const client = new ApiClient('/api');
+const client = new ApiClient('http://localhost:8000');
+
 const boot = async (): Promise<void> => {
   const response = await client.fetchActivation('initial prompt');
   const neurons = neuronSystem.build(response.layers);

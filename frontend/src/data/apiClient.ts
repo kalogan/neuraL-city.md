@@ -16,16 +16,17 @@ export class ApiClient {
       useAppState.getState().setLayers(data.layers);
       return data;
     } catch (error) {
-      console.warn('Activation API failed, retrying gracefully', error);
-      if (retries > 0) {
-        await new Promise((resolve) => setTimeout(resolve, 400));
-        return this.fetchActivation(prompt, retries - 1);
-      }
+  console.warn("Activation API failed, retrying gracefully", error);
 
-      const fallback: ActivationResponse = { layers: [] };
-      useAppState.getState().setLayers(fallback.layers);
-      return fallback;
-    }
+  if (retries > 0) {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return this.fetchActivation(prompt, retries - 1);
+  }
+
+  const fallback: ActivationResponse = { layers: [] };
+  useAppState.getState().setLayers(fallback.layers);
+  return fallback;
+}
   }
 
   async fetchGraph(query: string): Promise<unknown> {
@@ -34,8 +35,11 @@ export class ApiClient {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       return await response.json();
     } catch (error) {
-      console.warn('Graph API failed, continuing without graph data', error);
-      return null;
+        console.warn("Graph API failed, continuing without graph data", error);
+        return null;
+  }
+      throw error;
+
     }
   }
 }

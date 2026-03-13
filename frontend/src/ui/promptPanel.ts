@@ -12,7 +12,9 @@ export function createPromptPanel(onData: () => void): HTMLElement {
   const input = panel.querySelector<HTMLInputElement>('#prompt-input');
   const button = panel.querySelector<HTMLButtonElement>('#prompt-submit');
   const error = panel.querySelector<HTMLDivElement>('#prompt-error');
+
   const client = new ApiClient('/api');
+
 
   button?.addEventListener('click', async () => {
     if (!input) return;
